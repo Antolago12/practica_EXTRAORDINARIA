@@ -5,9 +5,10 @@ import com.google.gson.reflect.TypeToken;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import es.ufv.dis.back.examenFinal.ALB.model.Usuario;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import org.springframework.stereotype.Service;
 
 import java.io.*;
