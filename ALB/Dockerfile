@@ -1,4 +1,4 @@
-FROM amazoncorretto:11
+FROM amazoncorretto:17
 
 COPY target/ALB-0.0.1-SNAPSHOT.jar ALB-0.0.1-SNAPSHOT.jar
 
