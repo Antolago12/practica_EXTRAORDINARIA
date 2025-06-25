@@ -19,8 +19,7 @@ public class MainView extends VerticalLayout {
         setPadding(true);
         setSpacing(true);
 
-        grid.setColumns("id", "nombre", "apellidos", "nif", "email"); // Añade aquí las columnas que quieras
-        grid.getColumnByKey("id").setHeader("ID");
+        grid.setColumns("nombre", "apellidos", "nif", "email"); // Añade aquí las columnas que quieras
         grid.getColumnByKey("nombre").setHeader("Nombre");
         grid.getColumnByKey("apellidos").setHeader("Apellidos");
         grid.getColumnByKey("nif").setHeader("NIF");
