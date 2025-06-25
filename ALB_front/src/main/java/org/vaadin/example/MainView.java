@@ -2,6 +2,7 @@ package org.vaadin.example;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import org.vaadin.example.model.Usuario;
@@ -50,5 +51,15 @@ public class MainView extends VerticalLayout {
         // Botón Generar PDF (a completar)
         Button btnPdf = new Button("Generar PDF");
         add(btnPdf);
+
+        btnPdf.addClickListener(e -> {
+            try {
+                UsuarioService.generarPdf();
+                Notification.show("PDF generado (ver info.pdf en backend)");
+            } catch (Exception ex) {
+                Notification.show("Error generando PDF");
+            }
+        });
+
     }
 }

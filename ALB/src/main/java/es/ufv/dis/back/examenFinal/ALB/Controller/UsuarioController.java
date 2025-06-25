@@ -4,6 +4,10 @@ import es.ufv.dis.back.examenFinal.ALB.model.Usuario;
 import es.ufv.dis.back.examenFinal.ALB.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+//--------------PDF------
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+//--------------PDF------
 
 import java.util.List;
 
@@ -44,5 +48,15 @@ public class UsuarioController {
             }
         }
         usuarioService.guardarUsuarios(usuarios);
+    }
+    @GetMapping("/pdf")
+    public ResponseEntity<String> generarPdf() {
+        try {
+            usuarioService.generarPdfUsuarios();
+            return ResponseEntity.ok("PDF generado correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Error generando PDF");
+        }
     }
 }

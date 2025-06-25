@@ -2,7 +2,12 @@ package es.ufv.dis.back.examenFinal.ALB.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
 import es.ufv.dis.back.examenFinal.ALB.model.Usuario;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -17,6 +22,7 @@ public class UsuarioService {
     private static final String FILE_NAME = "usuarios.json";
     private final Gson gson = new Gson();
 
+    // Lee usuarios desde src/main/resources/usuarios.json
     public List<Usuario> cargarUsuarios() {
         try (
                 InputStream is = getClass().getClassLoader().getResourceAsStream(FILE_NAME);
@@ -31,15 +37,42 @@ public class UsuarioService {
         }
     }
 
-    // Si quieres modificar el archivo, deberías escribirlo fuera de resources.
-    // La carpeta resources es de solo lectura una vez el proyecto está empaquetado.
+    // Guarda usuarios en src/main/resources/usuarios.json (solo funciona en modo desarrollo)
     public void guardarUsuarios(List<Usuario> usuarios) {
-        // Esta función solo funcionará si ejecutas en modo desarrollo y apuntas a la ruta real del archivo,
-        // porque en un JAR las resources son solo lectura.
         try (FileWriter writer = new FileWriter("src/main/resources/" + FILE_NAME)) {
             gson.toJson(usuarios, writer);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Genera info.pdf con todos los usuarios
+    public void generarPdfUsuarios() throws Exception {
+        List<Usuario> usuarios = cargarUsuarios();
+
+        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+        PdfWriter.getInstance(document, new FileOutputStream("info.pdf"));
+        document.open();
+
+        document.add(new Paragraph("Listado de Usuarios\n\n"));
+
+        // Tabla: Nombre, Apellidos, NIF, Email, Ciudad
+        PdfPTable table = new PdfPTable(5);
+        table.addCell("Nombre");
+        table.addCell("Apellidos");
+        table.addCell("NIF");
+        table.addCell("Email");
+        table.addCell("Ciudad");
+
+        for (Usuario u : usuarios) {
+            table.addCell(u.getNombre());
+            table.addCell(u.getApellidos());
+            table.addCell(u.getNif());
+            table.addCell(u.getEmail());
+            table.addCell(u.getDireccion().getCiudad());
+        }
+
+        document.add(table);
+        document.close();
     }
 }

@@ -27,4 +27,13 @@ public class UsuarioService {
         Type listType = new TypeToken<List<Usuario>>() {}.getType();
         return gson.fromJson(response.body(), listType);
     }
+    public static void generarPdf() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/usuarios/pdf"))
+                .GET()
+                .build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
 }
