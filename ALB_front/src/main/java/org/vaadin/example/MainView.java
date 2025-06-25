@@ -25,6 +25,15 @@ public class MainView extends VerticalLayout {
         grid.getColumnByKey("nif").setHeader("NIF");
         grid.getColumnByKey("email").setHeader("Email");
 
+        // Añadir columna con el botón Editar
+        grid.addComponentColumn(usuario -> {
+            Button btnEditar = new Button("Editar");
+            btnEditar.addClickListener(e -> {
+                // Aquí va la lógica de edición
+            });
+            return btnEditar;
+        }).setHeader("Editar");
+
         try {
             List<Usuario> usuarios = UsuarioService.getUsuarios();
             grid.setItems(usuarios);
