@@ -1,4 +1,4 @@
-package es.ufv.dis.back.examenFinal.ALB;
+/*package es.ufv.dis.back.examenFinal.ALB;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,3 +19,4 @@ public class CorsConfig {
         };
     }
 }
+*/
