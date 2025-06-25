@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class UsuarioService {
-    private static final String API_URL = "http://localhost:8083/api/usuarios";
+    private static final String API_URL = "http://host.docker.internal:8083/api/usuarios";
     private static final Gson gson = new Gson();
 
     public static List<Usuario> getUsuarios() throws IOException, InterruptedException {
@@ -27,4 +27,13 @@ public class UsuarioService {
         Type listType = new TypeToken<List<Usuario>>() {}.getType();
         return gson.fromJson(response.body(), listType);
     }
+    public static void generarPdf() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8083/api/usuarios/pdf"))
+                .GET()
+                .build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
 }

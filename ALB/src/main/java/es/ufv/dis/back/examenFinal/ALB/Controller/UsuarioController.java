@@ -3,6 +3,7 @@ package es.ufv.dis.back.examenFinal.ALB.Controller;
 import es.ufv.dis.back.examenFinal.ALB.model.Usuario;
 import es.ufv.dis.back.examenFinal.ALB.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,35 +15,34 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    // Obtener todos los usuarios
     @GetMapping
     public List<Usuario> getAllUsuarios() {
-        return usuarioService.cargarUsuarios();
+        return usuarioService.loadAllUsuarios();
     }
 
+    // Buscar usuario por nombre (case-insensitive)
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<Usuario> getUsuarioByNombre(@PathVariable String nombre) {
+        Usuario usuario = usuarioService.findUsuarioByName(nombre);
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // (Opcional) Si quieres buscar por ID y tu POJO Usuario tiene getId()
     @GetMapping("/{id}")
-    public Usuario getUsuarioById(@PathVariable String id) {
-        return usuarioService.cargarUsuarios().stream()
+    public ResponseEntity<Usuario> getUsuarioById(@PathVariable String id) {
+        List<Usuario> usuarios = usuarioService.loadAllUsuarios();
+        return usuarios.stream()
                 .filter(u -> u.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public void addUsuario(@RequestBody Usuario usuario) {
-        List<Usuario> usuarios = usuarioService.cargarUsuarios();
-        usuarios.add(usuario);
-        usuarioService.guardarUsuarios(usuarios);
-    }
-
-    @PutMapping("/{id}")
-    public void updateUsuario(@PathVariable String id, @RequestBody Usuario usuario) {
-        List<Usuario> usuarios = usuarioService.cargarUsuarios();
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getId().equals(id)) {
-                usuarios.set(i, usuario);
-                break;
-            }
-        }
-        usuarioService.guardarUsuarios(usuarios);
-    }
+    // Otras rutas (añadir, modificar, PDF, etc) requieren que implementes guardarUsuarios, generarPdfUsuarios, etc
+    // Si necesitas estos métodos, tendrás que implementar también persistencia en UsuarioService
 }
