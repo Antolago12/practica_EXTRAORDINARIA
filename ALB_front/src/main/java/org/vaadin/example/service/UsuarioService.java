@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class UsuarioService {
-    private static final String API_URL = "http://localhost:8080/api/usuarios";
+    private static final String API_URL = "http://localhost:8083/api/usuarios";
     private static final Gson gson = new Gson();
 
     public static List<Usuario> getUsuarios() throws IOException, InterruptedException {
